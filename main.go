@@ -14,27 +14,27 @@ func main() {
 	var cityID = os.Getenv("owmCityID")
 	var appID = os.Getenv("owmAppID")
 	if cityID == "" || appID == "" {
-		os.Exit(2)
+		os.Exit(3)
 	}
 	resp, err := http.Get("https://api.openweathermap.org/data/2.5/weather?id=" + cityID + "&APPID=" + appID)
 	if err != nil {
 		log.Println(err)
-		os.Exit(3)
+		os.Exit(4)
 	}
 	cp, err := current(resp.Body)
 	if err != nil {
 		log.Println(err)
-		os.Exit(4)
+		os.Exit(5)
 	}
 	resp, err = http.Get("https://api.openweathermap.org/data/2.5/forecast?id=" + cityID + "&APPID=" + appID)
 	if err != nil {
 		log.Println(err)
-		os.Exit(5)
+		os.Exit(6)
 	}
 	fp, err := forecast(resp.Body)
 	if err != nil {
 		log.Println(err)
-		os.Exit(6)
+		os.Exit(7)
 	}
 	if fp+1 < cp {
 		fmt.Println("🤢👎")
