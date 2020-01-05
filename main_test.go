@@ -8,10 +8,10 @@ func TestCurrent(t *testing.T) {
 	const j = `{"coord":{"lon":139.69,"lat":35.69},"weather":[{"id":801,"main":"Clouds","description":"few clouds","icon":"02n"}],"base":"stations","main":{"temp":279.14,"feels_like":266.67,"temp_min":277.59,"temp_max":280.37,"pressure":1015,"humidity":41},"visibility":10000,"wind":{"speed":13.9,"deg":340,"gust":19.5},"clouds":{"all":20},"dt":1577790300,"sys":{"type":1,"id":8074,"country":"JP","sunrise":1577742635,"sunset":1577777810},"timezone":32400,"id":1850147,"name":"Tokyo","cod":200}`
 	n, err := current(strings.NewReader(j))
 	if err != nil {
-		t.Error()
+		t.Error(err)
 	}
 	if n != 1015 {
-		t.Error()
+		t.Error(n)
 	}
 }
 

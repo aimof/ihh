@@ -1,13 +1,14 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/aimof/jaason"
 )
 
 func main() {
@@ -48,10 +49,12 @@ func current(r io.Reader) (int, error) {
 	if err != nil {
 		return 0, err
 	}
-	var j interface{}
-	err = json.Unmarshal(b, &j)
-	p := j.(map[string]interface{})["main"].(map[string]interface{})["pressure"].(float64)
-	return int(p), nil
+	v, err := jaason.Parse(b)
+	if err != nil {
+		return 0, err
+	}
+	p, err := v.Get("main").Get("pressure").Int()
+	return p, err
 }
 
 func forecast(r io.Reader) (int, error) {
@@ -59,11 +62,10 @@ func forecast(r io.Reader) (int, error) {
 	if err != nil {
 		return 0, err
 	}
-	var j interface{}
-	err = json.Unmarshal(b, &j)
+	v, err := jaason.Parse(b)
 	if err != nil {
 		return 0, err
 	}
-	p := j.(map[string]interface{})["list"].([]interface{})[1].(map[string]interface{})["main"].(map[string]interface{})["pressure"].(float64)
-	return int(p), nil
+	p, err := v.Get("list").Get(1).Get("main").Get("pressure").Int()
+	return p, err
 }
